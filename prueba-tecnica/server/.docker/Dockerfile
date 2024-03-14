@@ -1,10 +1,14 @@
-FROM golang:latest
+FROM golang
+# WORKDIR /app
 
-WORKDIR /app/server
+# COPY go.mod ./
+# COPY go.sum ./
+# RUN go mod download
 
-COPY go.mod go.sum ./
-RUN go mod download
+# COPY *.go ./
 
-COPY . .
+# RUN go build -o /docker-gs-ping
 
-EXPOSE 8080 8080
+# EXPOSE 8080
+
+# CMD [ "/docker-gs-ping" ]
