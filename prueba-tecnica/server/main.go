@@ -2,6 +2,7 @@ package main
 
 import (
 	CSV "api/packages/csv"
+	Response "api/packages/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,9 +24,13 @@ func main() {
 	})
 
 	router.GET("/csv", func(c *gin.Context) {
-		csvData := CSV.ReadCsvFile("../data/customers-100000.csv")
+		csv := CSV.ReadCsvFile("../data/customers-100000.csv")
+		records := Response.Paginate(csv.Records, 1, 10, len(csv.Records))
+		headers := csv.Headers
+
 		c.JSON(http.StatusOK, gin.H{
-			"message": CSV.PaginatesCsvFile(csvData, 2, 10, len(csvData)),
+			"message": "hello world",
+			"data":    Response.Map(headers, records),
 		})
 	})
 

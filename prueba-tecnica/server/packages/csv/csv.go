@@ -6,7 +6,16 @@ import (
 	"os"
 )
 
-func ReadCsvFile(filePath string) [][]string {
+type CSV struct {
+	Records [][]string
+	Headers []string
+}
+
+func GetCsvHeaders(records [][]string) []string {
+	return records[0]
+}
+
+func ReadCsvFile(filePath string) CSV {
 	f, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal("Unable to read input file "+filePath, err)
@@ -18,14 +27,5 @@ func ReadCsvFile(filePath string) [][]string {
 	if err != nil {
 		log.Fatal("Unable to parse file as CSV for "+filePath, err)
 	}
-	return records
-}
-
-func PaginatesCsvFile(records [][]string, page int, pageSize int, totalRecords int) [][]string {
-	start := (page - 1) * pageSize
-	end := start + pageSize
-	if end > len(records) {
-		end = len(records)
-	}
-	return records[start:end]
+	return CSV{records, GetCsvHeaders(records)}
 }
