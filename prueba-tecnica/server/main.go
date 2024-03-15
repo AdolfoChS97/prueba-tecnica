@@ -27,10 +27,13 @@ func main() {
 		csv := CSV.ReadCsvFile("../data/customers-100000.csv")
 		records := Response.Paginate(csv.Records, 1, 10, len(csv.Records))
 		headers := csv.Headers
+		data := Response.Map(headers, records)
 
 		c.JSON(http.StatusOK, gin.H{
-			"message": "hello world",
-			"data":    Response.Map(headers, records),
+			"message": "ok",
+			"data":    data,
+			"total":   len(data) + 1,
+			"code":    0,
 		})
 	})
 
